@@ -208,11 +208,15 @@ export class DifyChatLanguageModel implements LanguageModelV2 {
 
               case "message":
               case "agent_message": {
+
+                // Retrieve event id else generate some
+                const id = ("id" in data && typeof data.id === "string") ? data.id : generateId();
+
                 // Type guard for answer property
                 if ("answer" in data && typeof data.answer === "string") {
                   controller.enqueue({
                     type: "text-delta",
-                    id: generateId(),
+                    id,
                     delta: data.answer,
                   });
 
